@@ -1,5 +1,7 @@
 package nearprotocol
 
+import api "github.com/shiki-tak/go-nearprotocol/api"
+
 type Wasmer struct {
 }
 
@@ -8,8 +10,8 @@ func NewWasmer() (*Wasmer, error) {
 }
 
 // Greet
-func (w *Wasmer) Greet(name string) string {
-	return "Hello, " + name
+func (w *Wasmer) Greet(name string) {
+	api.Greet(name)
 }
 
 // DeployContract
