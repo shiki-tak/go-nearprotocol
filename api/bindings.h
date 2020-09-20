@@ -10,3 +10,13 @@
 #include <stdlib.h>
 
 void greet(const char *name);
+
+void run_with_standalone(const char *vm_kind_c,
+                         const char *context_c,
+                         const char *context_file_c,
+                         const char *input_c,
+                         const char *state_c,
+                         const char *method_name_c,
+                         const char *config_c,
+                         const char *config_file_c,
+                         const char *wasm_file_c);

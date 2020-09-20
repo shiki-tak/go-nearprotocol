@@ -17,3 +17,12 @@ func (w *Wasmer) Greet(name string) {
 // DeployContract
 
 // FunctionCall
+
+// FunctionCallByStandalone
+// 	near.RunWithStandalone(context, contextFile, input, methodName, state, promiseResults, config, configFile, wasmFile, vmKind, profileGas)
+
+func (w *Wasmer) RunWithStandalone(context, contextFile, input, methodName,
+	state, config, configFile, wasmFile, vmKind string) {
+	api.RunStandalone(context, contextFile, input, methodName,
+		state, config, configFile, wasmFile, vmKind)
+}
