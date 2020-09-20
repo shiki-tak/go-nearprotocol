@@ -8,7 +8,7 @@ import (
 
 func main() {
 	var (
-		standalone  = flag.Bool("standalone", false, "execute vm mode")
+		api         = flag.String("api", "standalone", "execute vm mode")
 		context     = flag.String("context", "", "Specifies the execution context in JSON format, see `VMContext`.")
 		contextFile = flag.String("context-file", "", "Reads the context from the file.")
 		input       = flag.String("input", "", "Overrides input field of the context with the given string.")
@@ -27,13 +27,13 @@ func main() {
 		panic(err)
 	}
 
-	if *standalone {
+	if *api == "standalone" {
 		runStandalone(near, *context, *contextFile,
 			*input, *methodName, *state, *config, *configFile, *wasmFile, *vmKind)
-
+	} else if *api == "greet" {
+		near.Greet("Go-NearProtocol")
 	}
 
-	near.Greet("Go-NearProtocol")
 }
 
 func runStandalone(near *near.Wasmer, context, contextFile,
