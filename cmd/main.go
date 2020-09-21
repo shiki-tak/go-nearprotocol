@@ -22,7 +22,7 @@ func main() {
 
 	flag.Parse()
 
-	near, err := near.NewWasmer()
+	near, err := near.NewVM()
 	if err != nil {
 		panic(err)
 	}
@@ -33,10 +33,9 @@ func main() {
 	} else if *api == "greet" {
 		near.Greet("Go-NearProtocol")
 	}
-
 }
 
-func runStandalone(near *near.Wasmer, context, contextFile,
+func runStandalone(near *near.VM, context, contextFile,
 	input, methodName, state, config, configFile, wasmFile, vmKind string) {
 	near.RunWithStandalone(context, contextFile, input, methodName, state, config, configFile, wasmFile, vmKind)
 }

@@ -3,20 +3,35 @@ mod standalone;
 use libc;
 use std::ffi::CStr;
 
+use near_vm_logic::{VMConfig, VMLogicError};
+
+#[repr(C)]
+pub struct cache_t {}
+
+#[no_mangle]
+pub extern "C" fn init_cache() -> *mut cache_t {
+    let r = match do_init_cache() {
+        Ok(t) => {
+            t as *mut cache_t
+        }
+        Err(e) => {
+            panic!(e)
+        }
+    };
+    r
+}
+
+pub fn do_init_cache() -> Result<*mut VMConfig, VMLogicError> {
+    let config = VMConfig::default();
+    let out = Box::new(config);
+    Ok(Box::into_raw(out))
+}
+
 #[no_mangle]
 pub extern "C" fn greet(name: *const libc::c_char) {
     let buf_name = unsafe { CStr::from_ptr(name).to_bytes() };
     let str_name = String::from_utf8(buf_name.to_vec()).unwrap();
     println!("Hello, {}!", str_name);
-}
-
-fn arg_warapper(param: *const libc::c_char) -> Option<String> {
-    let buf_name = unsafe { CStr::from_ptr(param).to_bytes() };
-    let param_str = String::from_utf8(buf_name.to_vec()).unwrap();
-    if param_str == "" {
-        return None;
-    }
-    return Some(param_str)
 }
 
 #[no_mangle]
@@ -41,12 +56,11 @@ pub extern "C" fn run_with_standalone(vm_kind_c: *const libc::c_char, context_c:
             wasm_file);
 }
 
-// pub fn run(vm_kind: Option<String>
-//     context: Option<String>
-//     context_file: Option<String>
-//     input: Option<String>
-//     state: Option<String>
-//     method_name: Option<String>
-//     config: Option<String>
-//     config_file: Option<String>
-//     wasm_file: Option<String>)
+fn arg_warapper(param: *const libc::c_char) -> Option<String> {
+    let buf_name = unsafe { CStr::from_ptr(param).to_bytes() };
+    let param_str = String::from_utf8(buf_name.to_vec()).unwrap();
+    if param_str == "" {
+        return None;
+    }
+    return Some(param_str)
+}

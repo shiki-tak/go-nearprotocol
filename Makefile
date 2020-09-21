@@ -13,13 +13,13 @@ else
 	endif
 endif
 
-build: build-rust
+build: build-rust build-go
 
-# don't strip for now, for better error reporting
-# build-rust: build-rust-release strip
 build-rust: build-rust-release
 
-# use release build to actually ship - smaller and much faster
+build-go:
+	go build ./...
+
 build-rust-release:
 	cargo build --release --features backtraces
 	cp target/release/libgo_nearprotocol.$(DLL_EXT) api

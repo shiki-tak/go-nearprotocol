@@ -1,16 +1,24 @@
 package nearprotocol
 
-import api "github.com/shiki-tak/go-nearprotocol/api"
+import (
+	api "github.com/shiki-tak/go-nearprotocol/api"
+)
 
-type Wasmer struct {
+type VM struct {
+	cache api.Cache
 }
 
-func NewWasmer() (*Wasmer, error) {
-	return &Wasmer{}, nil
+func NewVM() (*VM, error) {
+	cache, err := api.InitVM()
+	if err != nil {
+		return nil, err
+	}
+
+	return &VM{cache: cache}, nil
 }
 
 // Greet
-func (w *Wasmer) Greet(name string) {
+func (vm *VM) Greet(name string) {
 	api.Greet(name)
 }
 
@@ -19,10 +27,7 @@ func (w *Wasmer) Greet(name string) {
 // FunctionCall
 
 // FunctionCallByStandalone
-// 	near.RunWithStandalone(context, contextFile, input, methodName, state, promiseResults, config, configFile, wasmFile, vmKind, profileGas)
-
-func (w *Wasmer) RunWithStandalone(context, contextFile, input, methodName,
+func (vm *VM) RunWithStandalone(context, contextFile, input, methodName,
 	state, config, configFile, wasmFile, vmKind string) {
-	api.RunStandalone(context, contextFile, input, methodName,
-		state, config, configFile, wasmFile, vmKind)
+	api.RunStandalone(context, contextFile, input, methodName, state, config, configFile, wasmFile, vmKind)
 }

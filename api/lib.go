@@ -8,6 +8,19 @@ import (
 	"unsafe"
 )
 
+type Cache struct {
+	ptr *C.cache_t
+}
+
+func InitVM() (Cache, error) {
+	ptr, err := C.init_cache()
+	if err != nil {
+		return Cache{}, err
+	}
+
+	return Cache{ptr: ptr}, nil
+}
+
 func Greet(name string) {
 	cStr := C.CString(name)
 	C.greet(cStr)

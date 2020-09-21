@@ -9,7 +9,13 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+typedef struct cache_t {
+
+} cache_t;
+
 void greet(const char *name);
+
+cache_t *init_cache(void);
 
 void run_with_standalone(const char *vm_kind_c,
                          const char *context_c,
